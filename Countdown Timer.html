@@ -1,0 +1,63 @@
+<!-- countdown timer -->
+<!DOCTYPE html>
+<html style="background-color:burlywood" lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Countdown Timer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2 style="font-size: 100px;">Custom Countdown Timer</h2>
+  <p style="font-weight: bold; font-size: 70px;">Set your timer:</p>
+  <input type="datetime-local" id="endTime">
+  <div style="text-align: center; padding-top: 50px;">
+    <button
+      style="font-size: 75px; background-color: white; color: rosybrown; border: 7px solid rosybrown; width: 300px; height: 200px;"
+      onclick="setTimer()">Start
+      Timer</button>
+  </div>
+  <h3 style="font-size: 70px;">Time Left:</h3>
+  <p id="timer" style="font-size: 60px;">...</p>
+
+  <script>
+    let countdown;
+
+    function setTimer() {
+      //Clear existing intervals
+      clearInterval(countdown);
+      const endTime = new Date(document.getElementById('endTime').value).getTime();
+      if (isNaN(endTime))
+        return alert('Please select a valid date and time.');
+
+      countdown = setInterval(function () {
+        const now = Date.now();
+        const timeDifference = endTime - now;
+        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+        document.getElementById('timer').textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+        if (timeDifference < 0) {
+          clearInterval(countdown);
+          document.getElementById('timer').textContent = 'Time is up!';
+        }
+      }, 1000);
+    }
+  </script>
+
+</body>
+
+</html>
